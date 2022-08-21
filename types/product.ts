@@ -1,11 +1,11 @@
-export interface Asset {
+export type Asset = {
   id: number;
   filename: string;
-}
+};
 
-export interface Product {
+export type Product = {
   id: number;
   name: string;
   price: number;
   assets: Asset[];
-}
+};

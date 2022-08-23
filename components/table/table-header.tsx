@@ -1,5 +1,9 @@
 import { Header, flexRender } from "@tanstack/react-table";
-import { ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/20/solid";
+import {
+  ArrowUpIcon,
+  ArrowDownIcon,
+  MinusIcon,
+} from "@heroicons/react/20/solid";
 
 export interface TableHeaderProps {
   header: Header<any, unknown>;
@@ -15,10 +19,14 @@ export const TableHeader = ({ header }: TableHeaderProps) => {
         onClick={header.column.getToggleSortingHandler()}
       >
         {flexRender(header.column.columnDef.header, header.getContext())}
-        {{
-          asc: <ArrowUpIcon className="h-4" />,
-          desc: <ArrowDownIcon className="h-4" />,
-        }[header.column.getIsSorted() as string] || null}
+
+        {header.column.getCanSort() &&
+          ({
+            asc: <ArrowUpIcon className="h-4" />,
+            desc: <ArrowDownIcon className="h-4" />,
+          }[header.column.getIsSorted() as string] || (
+            <MinusIcon className="h-4 text-gray-200" />
+          ))}
       </span>
     </th>
   );

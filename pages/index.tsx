@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { NextPage } from "next";
 import type { Product } from "../types/product";
 import type { ApiError } from "../types/error";
-import { ProductsTable } from "../components/products-table";
+import { ProductsTable } from "../components/product/products-table";
 
 const fetchProducts = async () => {
   const res = await fetch("http://localhost:8080/products");
@@ -30,8 +30,8 @@ const Home: NextPage = () => {
   }
 
   return (
-    <main className="flex flex-col items-center justify-center">
-      <ProductsTable data={productsQuery.data}></ProductsTable>
+    <main className="mx-auto flex max-w-5xl flex-col justify-center gap-4 p-4">
+      <ProductsTable data={productsQuery.data} />
     </main>
   );
 };

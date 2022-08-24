@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn-primary {
+    @apply flex items-center gap-2 rounded-lg bg-gray-900 py-2 px-4 text-sm text-zinc-50;
+  }
+}

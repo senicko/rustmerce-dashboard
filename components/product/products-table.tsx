@@ -11,6 +11,7 @@ import {
 import { AssetPreview } from "./assets-preview";
 import { TableHeader } from "../table/table-header";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -33,9 +34,9 @@ const columns = [
   }),
 ];
 
-export interface ProductsTableProps {
+export type ProductsTableProps = {
   data: Product[];
-}
+};
 
 export const ProductsTable = ({ data }: ProductsTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -61,14 +62,15 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
           </span>
         </div>
         <div>
-          <button className="flex items-center gap-2 rounded-lg bg-zinc-900 py-2 px-4 text-gray-50">
-            <PlusIcon className="w-4" />
-            <span className="text-sm">Add product</span>
-          </button>
+          <Link href="/products/add">
+            <a className="btn-primary">
+              <PlusIcon className="w-4" /> Add Product
+            </a>
+          </Link>
         </div>
       </header>
       <table className="w-full border-collapse border border-gray-200">
-        <thead className="rounded-t">
+        <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (

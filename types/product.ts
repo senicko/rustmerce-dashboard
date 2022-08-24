@@ -9,3 +9,8 @@ export type Product = {
   price: number;
   assets: Asset[];
 };
+
+export type ProductInsert = {
+  name: string;
+  price: number;
+};

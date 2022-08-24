@@ -1,10 +1,24 @@
 import { useMutation } from "@tanstack/react-query";
-import { useState, FormEvent } from "react";
-import { ProductInsert } from "../../types/product";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const productInsertSchema = z.object({
+  name: z.string().min(1),
+  price: z.number().min(1),
+});
+
+type ProductInsert = z.infer<typeof productInsertSchema>;
 
 const CreateProduct = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState<number>(1);
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProductInsert>({
+    resolver: zodResolver(productInsertSchema),
+  });
 
   // TODO: Learn about cancellation and other things in TanStack Query.
   const addProductMutation = useMutation((product: ProductInsert) => {
@@ -17,43 +31,26 @@ const CreateProduct = () => {
     });
   });
 
-  // TODO: Look at Formik or other ways to handle forms in a neat way.
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!price) return alert("You need to enter the price!");
-    if (name.length === 0) return alert("You need to enter the name!");
-
-    addProductMutation.mutate({ name, price });
-  };
+  const onSubmit: SubmitHandler<ProductInsert> = (data) =>
+    addProductMutation.mutate(data);
 
   return (
-    <>
-      {addProductMutation.isSuccess && <p>Product added!</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
-            className="border"
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="price">Price</label>
-          <input
-            className="border"
-            id="price"
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(parseInt(e.target.value))}
-          />
-        </div>
-        <button className="btn-primary">Add</button>
-      </form>
-    </>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <label htmlFor="name">Name</label>
+      <input className="border" id="name" {...register("name")} />
+      {errors.name && <span>{errors.name.message}</span>}
+
+      <label htmlFor="price">Price</label>
+      <input
+        className="border"
+        type="number"
+        id="price"
+        {...register("price", { valueAsNumber: true })}
+      />
+      {errors.price && <span>{errors.price.message}</span>}
+
+      <button className="btn-primary">Add</button>
+    </form>
   );
 };
 

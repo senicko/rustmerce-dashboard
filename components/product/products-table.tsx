@@ -7,11 +7,13 @@ import {
   flexRender,
   SortingState,
   getSortedRowModel,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import { AssetPreview } from "./assets-preview";
 import { TableHeader } from "../table/table-header";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -50,6 +52,7 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -94,6 +97,22 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
           ))}
         </tbody>
       </table>
+      <div className="flex rounded-b-lg border-x border-b border-gray-200 p-4">
+        <button
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+          className="text-zinc-900 disabled:text-zinc-400"
+        >
+          <ChevronLeftIcon className="w-4" />
+        </button>
+        <button
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+          className="text-zinc-gray disabled:text-gray-400"
+        >
+          <ChevronRightIcon className="w-4" />
+        </button>
+      </div>
     </div>
   );
 };

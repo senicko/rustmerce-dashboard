@@ -13,7 +13,7 @@ export const TableHeader = ({ header }: TableHeaderProps) => {
   if (header.isPlaceholder) return null;
 
   return (
-    <th className="px-4 py-2 text-left text-sm font-normal text-gray-600">
+    <th className="px-4 py-2 text-left font-normal text-gray-600">
       <span
         className="flex select-none items-center gap-2 text-inherit"
         onClick={header.column.getToggleSortingHandler()}

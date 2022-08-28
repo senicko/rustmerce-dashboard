@@ -13,7 +13,7 @@ import { AssetPreview } from "./assets-preview";
 import { TableHeader } from "../table/table-header";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -60,16 +60,9 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
       <header className="flex items-center justify-between rounded-t-lg border-x border-t border-gray-200 p-4">
         <div className="flex items-center gap-4">
           <span className="font-medium text-gray-800">Products</span>
-          <span className="rounded-full bg-gray-50 py-1 px-3 text-xs font-medium text-gray-600">
+          <span className="rounded-full bg-gray-50 py-1 px-3 text-sm text-gray-600">
             {data.length} products
           </span>
-        </div>
-        <div>
-          <Link href="/products/add">
-            <a className="btn-primary">
-              <PlusIcon className="w-4" /> Add Product
-            </a>
-          </Link>
         </div>
       </header>
       <table className="w-full border-collapse border border-gray-200">
@@ -86,10 +79,7 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id} className="odd:bg-gray-50">
               {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className="h-[64px] px-4 py-4 text-sm text-gray-600"
-                >
+                <td key={cell.id} className="h-[64px] px-4 py-4 text-gray-600">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -97,21 +87,26 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
           ))}
         </tbody>
       </table>
-      <div className="flex rounded-b-lg border-x border-b border-gray-200 p-4">
-        <button
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-          className="text-zinc-900 disabled:text-zinc-400"
-        >
-          <ChevronLeftIcon className="w-4" />
-        </button>
-        <button
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-          className="text-zinc-gray disabled:text-gray-400"
-        >
-          <ChevronRightIcon className="w-4" />
-        </button>
+      <div className="flex items-center gap-4 rounded-b-lg border-x border-b border-gray-200 p-4">
+        <div className="flex gap-2">
+          <button
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="flex aspect-square w-8 cursor-pointer items-center justify-center rounded-lg border text-zinc-900 hover:bg-gray-50 disabled:text-zinc-400"
+          >
+            <ChevronLeftIcon className="w-4" />
+          </button>
+          <button
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="flex aspect-square w-8 cursor-pointer items-center justify-center rounded-lg border text-zinc-900 hover:bg-gray-50 disabled:text-zinc-400"
+          >
+            <ChevronRightIcon className="w-4" />
+          </button>
+        </div>
+        <span className="text-sm text-gray-600">
+          {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+        </span>
       </div>
     </div>
   );

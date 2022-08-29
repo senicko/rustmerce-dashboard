@@ -10,8 +10,13 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import { AssetPreview } from "./assets-preview";
-import { TableHeader } from "../table/table-header";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
+  MinusIcon,
+} from "@heroicons/react/24/solid";
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -73,7 +78,28 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHeader key={header.id} header={header} />
+                  <th
+                    className="px-4 py-2 text-left font-normal text-gray-600"
+                    key={header.id}
+                    style={{ width: `${header.getSize()}%` }}
+                  >
+                    <span
+                      className="flex select-none items-center gap-2 text-inherit"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {header.column.getCanSort() &&
+                        ({
+                          asc: <ArrowUpIcon className="h-4" />,
+                          desc: <ArrowDownIcon className="h-4" />,
+                        }[header.column.getIsSorted() as string] || (
+                          <MinusIcon className="h-4 text-gray-300" />
+                        ))}
+                    </span>
+                  </th>
                 ))}
               </tr>
             ))}

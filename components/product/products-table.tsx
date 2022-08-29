@@ -11,8 +11,6 @@ import {
 } from "@tanstack/react-table";
 import { AssetPreview } from "./assets-preview";
 import { TableHeader } from "../table/table-header";
-import { PlusIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 
 const columnHelper = createColumnHelper<Product>();
@@ -22,17 +20,21 @@ const columns = [
     id: "#",
     header: "#",
     cell: (info) => info.row.index + 1,
+    maxSize: 10,
   }),
   columnHelper.accessor("name", {
     header: "Name",
+    size: 50,
   }),
   columnHelper.accessor("price", {
     header: "Price",
     cell: (info) => `$${info.getValue()}`,
+    size: 20,
   }),
   columnHelper.accessor("assets", {
     header: "Assets",
     cell: (info) => <AssetPreview visibleCount={3} assets={info.getValue()} />,
+    size: 20,
   }),
 ];
 
@@ -65,28 +67,33 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
           </span>
         </div>
       </header>
-      <table className="w-full border-collapse border border-gray-200">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHeader key={header.id} header={header} />
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="odd:bg-gray-50">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="h-[64px] px-4 py-4 text-gray-600">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto border border-gray-200">
+        <table className="w-full border-collapse">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHeader key={header.id} header={header} />
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="odd:bg-gray-50">
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className="h-[64px] whitespace-nowrap px-4 py-4 text-left text-gray-600 sm:whitespace-normal"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <div className="flex items-center gap-4 rounded-b-lg border-x border-b border-gray-200 p-4">
         <div className="flex gap-2">
           <button

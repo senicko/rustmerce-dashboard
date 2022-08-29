@@ -13,7 +13,7 @@ export const AssetPreview = ({ assets, visibleCount }: AssetPreviewProps) => {
         // TODO: Change this later when api will provide image width / height
         <div
           key={asset.id}
-          className="relative ml-[-16px] aspect-square h-full overflow-hidden rounded-full border border-white first:ml-0"
+          className="relative ml-[-16px] aspect-square h-8 overflow-hidden rounded-full border border-white first:ml-0"
         >
           <Image
             src={`http://localhost:8080/assets/${asset.filename}`}

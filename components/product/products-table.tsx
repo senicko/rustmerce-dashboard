@@ -21,12 +21,6 @@ import {
 const columnHelper = createColumnHelper<Product>();
 
 const columns = [
-  columnHelper.display({
-    id: "#",
-    header: "#",
-    cell: (info) => info.row.index + 1,
-    maxSize: 10,
-  }),
   columnHelper.accessor("name", {
     header: "Name",
     size: 50,
@@ -63,7 +57,7 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
   });
 
   return (
-    <div className="w-full shadow-sm">
+    <div className="w-full bg-white">
       <header className="flex items-center justify-between rounded-t-lg border-x border-t border-gray-200 p-4">
         <div className="flex items-center gap-4">
           <span className="font-medium text-gray-800">Products</span>
@@ -106,7 +100,7 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="odd:bg-gray-50">
+              <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { NextPage } from "next";
 
 const productInsertSchema = z.object({
   name: z.string().min(1),
@@ -12,7 +13,7 @@ const productInsertSchema = z.object({
 
 type ProductInsert = z.infer<typeof productInsertSchema>;
 
-const CreateProduct = () => {
+const CreateProduct: NextPage = () => {
   const {
     register,
     handleSubmit,
@@ -36,7 +37,7 @@ const CreateProduct = () => {
     addProductMutation.mutate(data);
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <header>
         <Link href="/">
           <a className="flex gap-2">
@@ -84,7 +85,7 @@ const CreateProduct = () => {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

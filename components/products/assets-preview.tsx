@@ -1,12 +1,12 @@
-import { Asset } from "../../types/product";
+import { Asset } from "../../types/api";
 import Image from "next/image";
 
-export interface AssetPreviewProps {
+export interface AssetsPreviewProps {
   assets: Asset[];
   visibleCount: number;
 }
 
-export const AssetPreview = ({ assets, visibleCount }: AssetPreviewProps) => {
+export const AssetsPreview = ({ assets, visibleCount }: AssetsPreviewProps) => {
   return (
     <div className="flex h-full items-center">
       {assets.slice(0, visibleCount).map((asset) => (

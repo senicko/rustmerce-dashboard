@@ -1,47 +1,28 @@
-import { useState } from "react";
-import { Product } from "../../types/product";
 import {
-  createColumnHelper,
-  useReactTable,
-  getCoreRowModel,
+  ColumnDef,
   flexRender,
-  SortingState,
-  getSortedRowModel,
+  getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
+  Header,
+  SortingState,
+  useReactTable,
 } from "@tanstack/react-table";
-import { AssetPreview } from "./assets-preview";
+import { useState } from "react";
 import {
+  ArrowDownIcon,
+  ArrowUpIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
   MinusIcon,
 } from "@heroicons/react/24/solid";
 
-const columnHelper = createColumnHelper<Product>();
-
-const columns = [
-  columnHelper.accessor("name", {
-    header: "Name",
-    size: 50,
-  }),
-  columnHelper.accessor("price", {
-    header: "Price",
-    cell: (info) => `$${info.getValue()}`,
-    size: 20,
-  }),
-  columnHelper.accessor("assets", {
-    header: "Assets",
-    cell: (info) => <AssetPreview visibleCount={3} assets={info.getValue()} />,
-    size: 20,
-  }),
-];
-
-export type ProductsTableProps = {
-  data: Product[];
+export type TableProps<TValue> = {
+  columns: ColumnDef<TValue, any>[];
+  data: TValue[];
 };
 
-export const ProductsTable = ({ data }: ProductsTableProps) => {
+export const Table = <TValue,>({ data, columns }: TableProps<TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
@@ -56,26 +37,28 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  const getSortIcon = (header: Header<TValue, unknown>) => {
+    return (
+      {
+        asc: <ArrowUpIcon className="h-4" />,
+        desc: <ArrowDownIcon className="h-4" />,
+      }[header.column.getIsSorted() as string] || (
+        <MinusIcon className="h-4 text-gray-300" />
+      )
+    );
+  };
+
   return (
-    <div className="w-full bg-white">
-      <header className="flex items-center justify-between rounded-t-lg border-x border-t border-gray-200 p-4">
-        <div className="flex items-center gap-4">
-          <span className="font-medium text-gray-800">Products</span>
-          <span className="rounded-full bg-gray-50 py-1 px-3 text-sm text-gray-600">
-            {data.length} products
-          </span>
-        </div>
-      </header>
-      <div className="overflow-x-auto border border-gray-200">
-        <table className="w-full border-collapse">
+    <div className="w-full overflow-hidden rounded-lg border border-gray-200">
+      <div>
+        <table className="w-full border-collapse bg-white">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
+              <tr key={headerGroup.id} className="border-b border-gray-200">
                 {headerGroup.headers.map((header) => (
                   <th
                     className="px-4 py-2 text-left font-normal text-gray-600"
                     key={header.id}
-                    style={{ width: `${header.getSize()}%` }}
                   >
                     <span
                       className="flex select-none items-center gap-2 text-inherit"
@@ -85,13 +68,7 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
                         header.column.columnDef.header,
                         header.getContext()
                       )}
-                      {header.column.getCanSort() &&
-                        ({
-                          asc: <ArrowUpIcon className="h-4" />,
-                          desc: <ArrowDownIcon className="h-4" />,
-                        }[header.column.getIsSorted() as string] || (
-                          <MinusIcon className="h-4 text-gray-300" />
-                        ))}
+                      {header.column.getCanSort() && getSortIcon(header)}
                     </span>
                   </th>
                 ))}
@@ -100,7 +77,7 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
+              <tr key={row.id} className="border-b border-gray-200">
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
@@ -114,7 +91,7 @@ export const ProductsTable = ({ data }: ProductsTableProps) => {
           </tbody>
         </table>
       </div>
-      <div className="flex items-center gap-4 rounded-b-lg border-x border-b border-gray-200 p-4">
+      <div className="flex items-center gap-4 bg-white p-4">
         <div className="flex gap-2">
           <button
             onClick={() => table.previousPage()}

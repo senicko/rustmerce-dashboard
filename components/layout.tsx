@@ -1,15 +1,16 @@
-import { Nav } from "./nav/nav";
+import { Nav } from "./nav";
+import { ReactNode } from "react";
 
 export type LayoutProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
-    <main className="flex h-full">
+    <main className="flex h-full w-full">
       <Nav />
-      <div className="flex w-96 flex-1 justify-center p-4">
-        <div className="w-3/4 max-w-7xl">{children}</div>
+      <div className="flex flex-1 justify-center p-8">
+        <div className="w-full max-w-screen-2xl">{children}</div>
       </div>
     </main>
   );

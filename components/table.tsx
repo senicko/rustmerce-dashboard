@@ -20,9 +20,14 @@ import {
 export type TableProps<TValue> = {
   columns: ColumnDef<TValue, any>[];
   data: TValue[];
+  onClick: (value: TValue) => void;
 };
 
-export const Table = <TValue,>({ data, columns }: TableProps<TValue>) => {
+export const Table = <TValue,>({
+  data,
+  columns,
+  onClick,
+}: TableProps<TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
@@ -77,7 +82,11 @@ export const Table = <TValue,>({ data, columns }: TableProps<TValue>) => {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="border-b border-gray-200">
+              <tr
+                key={row.id}
+                className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
+                onClick={() => onClick(row.original)}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}

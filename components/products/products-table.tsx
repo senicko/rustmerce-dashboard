@@ -3,6 +3,7 @@ import type { ApiError, Product } from "../../types/api";
 import { useQuery } from "@tanstack/react-query";
 import { Table } from "../table";
 import { AssetsPreview } from "./assets-preview";
+import { useRouter } from "next/router";
 
 const columnHelper = createColumnHelper<Product>();
 
@@ -32,10 +33,16 @@ const fetchProducts = async () => {
 };
 
 export const ProductsTable = () => {
+  const router = useRouter();
+
   const productsQuery = useQuery<Product[], ApiError>(
     ["products"],
     fetchProducts
   );
+
+  const onProductClick = (product: Product) => {
+    router.push(`/products/${product.id}`);
+  };
 
   if (productsQuery.isLoading) {
     return <p>Loading ...</p>;
@@ -45,5 +52,11 @@ export const ProductsTable = () => {
     return <p>Error: {productsQuery.error.message}</p>;
   }
 
-  return <Table columns={columns} data={productsQuery.data} />;
+  return (
+    <Table
+      columns={columns}
+      data={productsQuery.data}
+      onClick={onProductClick}
+    />
+  );
 };

@@ -15,6 +15,25 @@ const columns = [
     header: "Price",
     cell: (info) => `$${info.getValue()}`,
   }),
+  columnHelper.accessor("status", {
+    header: "Status",
+    cell: (info) => {
+      switch (info.getValue()) {
+        case "Draft":
+          return (
+            <span className="w-fit min-w-[64px] rounded-full bg-orange-300 px-2 py-1 text-sm text-orange-800">
+              Draft
+            </span>
+          );
+        case "Published":
+          return (
+            <span className="w-fit min-w-[64px] rounded-full bg-lime-300 px-2 py-1 text-sm text-lime-800">
+              Published
+            </span>
+          );
+      }
+    },
+  }),
   columnHelper.accessor("assets", {
     header: "Assets",
     cell: (info) => <AssetsPreview visibleCount={3} assets={info.getValue()} />,

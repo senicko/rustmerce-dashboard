@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .button {
+    @apply min-w-[96px] rounded-lg bg-lime-600 py-3 px-4 text-white  transition-colors hover:bg-lime-500;
+  }
+}
